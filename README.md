@@ -1,1 +1,1 @@
-# golang-temp
+# Go项目模板
