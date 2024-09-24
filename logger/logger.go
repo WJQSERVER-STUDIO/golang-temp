@@ -2,6 +2,7 @@
 package logger
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -29,9 +30,10 @@ func Log(customMessage string) {
 	}
 }
 
-// logw 用于简化日志记录，直接使用此函数
-func logw(message string) {
-	Log(message)
+// Logw 用于格式化日志记录
+func Logw(format string, args ...interface{}) {
+	message := fmt.Sprintf(format, args...) // 格式化消息
+	Log(message)                            // 记录日志
 }
 
 // Close 关闭日志文件

@@ -1,16 +1,18 @@
 #!/bin/bash
 
+APPLICATON=go
+
 if [ ! -f /data/caddy/config/Caddyfile ]; then
     cp /data/caddy/Caddyfile /data/caddy/config/Caddyfile
 fi
 
-if [ ! -f /data/go/config/config.yaml ]; then
-    cp /data/go/config.yaml /data/go/config/config.yaml
+if [ ! -f /data/${APPLICATON}/config/config.yaml ]; then
+    cp /data/${APPLICATON}/config.yaml /data/${APPLICATON}/config/config.yaml
 fi
 
-/data/caddy/caddy run --config /data/caddy/config/Caddyfile > /data/go/log/caddy.log 2>&1 &
+/data/caddy/caddy run --config /data/caddy/config/Caddyfile > /data${APPLICATON}/log/caddy.log 2>&1 &
 
-/data/go/go > /data/ghproxy/log/run.log 2>&1 &
+/data/${APPLICATON}/${APPLICATON} > /data/ghproxy/log/run.log 2>&1 &
 
 while [[ true ]]; do
     sleep 1
