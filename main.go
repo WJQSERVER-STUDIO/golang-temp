@@ -9,7 +9,7 @@ import (
 )
 
 var cfg *config.Config
-var logw = logger.logw
+var logw = logger.Logw
 
 func loadConfig() {
 	var err error
