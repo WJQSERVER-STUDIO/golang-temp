@@ -10,11 +10,12 @@ import (
 
 var cfg *config.Config
 var logw = logger.Logw
+var configfile = "/data/go/config/config.yaml"
 
 func loadConfig() {
 	var err error
 	// 初始化配置
-	cfg, err = config.LoadConfig("/data/go/config/config.yaml")
+	cfg, err = config.LoadConfig(configfile)
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
