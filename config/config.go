@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	LogFilePath string `yaml:"logfilepath"`
+	MaxLogSize  int    `yaml:"maxlogsize"`
 }
 
 // LoadConfig 从 YAML 配置文件加载配置
