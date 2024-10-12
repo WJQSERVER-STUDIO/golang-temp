@@ -1,2 +1,0 @@
-logfilepath: "/data/ghproxy/log/ghproxy.log"
-maxlogsize: 25 #MB

@@ -1,30 +1,28 @@
 package config
 
 import (
-	"os"
-
-	"gopkg.in/yaml.v3"
+	"github.com/BurntSushi/toml"
 )
 
 type Config struct {
-	LogFilePath string `yaml:"logfilepath"`
-	MaxLogSize  int    `yaml:"maxlogsize"`
+	Server ServerConfig
+	Log    LogConfig
 }
 
-// LoadConfig 从 YAML 配置文件加载配置
+type ServerConfig struct {
+	Port int `toml:"port"`
+}
+
+type LogConfig struct {
+	LogFilePath string `toml:"logfilepath"`
+	MaxLogSize  int    `toml:"maxlogsize"`
+}
+
+// LoadConfig 从 TOML 配置文件加载配置
 func LoadConfig(filePath string) (*Config, error) {
 	var config Config
-	if err := loadYAML(filePath, &config); err != nil {
+	if _, err := toml.DecodeFile(filePath, &config); err != nil {
 		return nil, err
 	}
 	return &config, nil
-}
-
-// LoadyamlConfig 从 YAML 配置文件加载配置
-func loadYAML(filePath string, out interface{}) error {
-	data, err := os.ReadFile(filePath)
-	if err != nil {
-		return err
-	}
-	return yaml.Unmarshal(data, out)
 }
