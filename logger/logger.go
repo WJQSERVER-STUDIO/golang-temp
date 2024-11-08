@@ -18,7 +18,7 @@ var (
 	logger       *log.Logger
 	logChannel   = make(chan string, 100)
 	quitChannel  = make(chan struct{})
-	logFileMutex sync.Mutex // 保护 logFile 的互斥锁
+	logFileMutex sync.Mutex
 	logFilePath  = "/data/go/log/go.log"
 )
 
@@ -100,7 +100,7 @@ func Close() {
 func monitorLogSize(logFilePath string, maxLogsize int) {
 	var maxLogsizeBytes int64 = int64(maxLogsize) * 1024 * 1024 // 最大日志文件大小，单位为MB
 	for {
-		time.Sleep(600 * time.Second) // 每10分钟检查一次
+		time.Sleep(120 * time.Minute) // 每120分钟检查一次
 		logFileMutex.Lock()
 		info, err := logFile.Stat()
 		logFileMutex.Unlock()

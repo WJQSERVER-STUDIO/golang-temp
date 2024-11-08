@@ -7,11 +7,14 @@ import (
 
 	"go/config"
 	"go/logger"
+
+	"github.com/gin-gonic/gin"
 )
 
 var (
 	cfg        *config.Config
 	configfile = "/data/go/config/config.yaml"
+	router     *gin.Engine
 )
 
 // 日志模块
@@ -52,8 +55,15 @@ func init() {
 	ReadFlag()
 	loadConfig()
 	setupLogger()
+
+	gin.SetMode(gin.ReleaseMode)
+	router.UseH2C = true
 }
 
 func main() {
+	err := router.Run(fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port))
+	if err != nil {
+		logError("Failed to start server: %v\n", err)
+	}
 	defer logger.Close() // 确保在退出时关闭日志文件
 }
