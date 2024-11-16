@@ -13,7 +13,7 @@ import (
 
 var (
 	cfg        *config.Config
-	configfile = "/data/go/config/config.yaml"
+	configfile = "/data/go/config/config.toml"
 	router     *gin.Engine
 )
 

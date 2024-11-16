@@ -3,5 +3,5 @@ host = "127.0.0.1"
 port = 8080 
 
 [log]
-logfilepath = "/data/ghproxy/log/ghproxy.log" 
+logfilepath = "/data/go/log/go.log" 
 maxlogsize = 5 # MB
