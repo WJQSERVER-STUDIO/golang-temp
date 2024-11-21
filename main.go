@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"go/api"
 	"go/config"
 	"go/logger"
 
@@ -27,6 +28,7 @@ var (
 
 func ReadFlag() {
 	cfgfile := flag.String("cfg", configfile, "config file path")
+	flag.Parse()
 	configfile = *cfgfile
 }
 
@@ -51,13 +53,19 @@ func setupLogger() {
 	logw("Init Completed")
 }
 
+func setupApi(cfg *config.Config, router *gin.Engine) {
+	api.InitHandleRouter(cfg, router)
+}
+
 func init() {
 	ReadFlag()
 	loadConfig()
 	setupLogger()
+	setupApi(cfg, router)
 
 	gin.SetMode(gin.ReleaseMode)
-	router.UseH2C = true
+	router.UseH2C = false
+	setupApi(cfg, router)
 }
 
 func main() {

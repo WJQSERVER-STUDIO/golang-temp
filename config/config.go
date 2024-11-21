@@ -10,7 +10,8 @@ type Config struct {
 }
 
 type ServerConfig struct {
-	Port int `toml:"port"`
+	Host string `toml:"host"`
+	Port int    `toml:"port"`
 }
 
 type LogConfig struct {
