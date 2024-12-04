@@ -25,7 +25,7 @@ RUN wget -O /data/caddy/Caddyfile https://raw.githubusercontent.com/${USER}/${RE
 # 后端
 RUN VERSION=$(curl -s https://raw.githubusercontent.com/${USER}/${REPO}/main/VERSION) && \
     wget -O /data/${APPLICATION}/${APPLICATION} https://github.com/${USER}/${REPO}/releases/download/$VERSION/${APPLICATION}-${TARGETOS}-${TARGETARCH}
-RUN wget -O /data/${APPLICATION}/config.yaml https://raw.githubusercontent.com/${USER}/${REPO}/main/config/config.yaml
+RUN wget -O /data/${APPLICATION}/config.toml https://raw.githubusercontent.com/${USER}/${REPO}/main/config/config.toml
 RUN wget -O /usr/local/bin/init.sh https://raw.githubusercontent.com/${USER}/${REPO}/main/docker/dockerfile/release/init.sh
 
 # 权限
