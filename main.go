@@ -61,9 +61,9 @@ func init() {
 	ReadFlag()
 	loadConfig()
 	setupLogger()
-	setupApi(cfg, router)
 
 	gin.SetMode(gin.ReleaseMode)
+	router = gin.Default()
 	router.UseH2C = false
 	setupApi(cfg, router)
 }
