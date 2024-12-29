@@ -19,11 +19,12 @@ var (
 	logChannel   = make(chan string, 100)
 	quitChannel  = make(chan struct{})
 	logFileMutex sync.Mutex
-	logFilePath  = "/data/go/log/go.log"
+	//logFilePath  = "/data/go/log/go.log"
 )
 
 // Init 初始化日志记录器，接受日志文件路径作为参数
 func Init(logFilePath_input string, maxLogsize int) error {
+	var logFilePath string
 	logFileMutex.Lock()
 	defer logFileMutex.Unlock()
 
@@ -81,7 +82,8 @@ func LogWarning(format string, args ...interface{}) {
 // 日志等级ERROR
 func LogError(format string, args ...interface{}) {
 	message := fmt.Sprintf(format, args...)
-	Log(message)
+	output := fmt.Sprintf("[ERROR] %s", message)
+	Log(output)
 }
 
 // Close 关闭日志文件
