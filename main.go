@@ -7,7 +7,8 @@ import (
 
 	"go/api"
 	"go/config"
-	"go/logger"
+
+	"github.com/WJQSERVER-STUDIO/go-utils/logger"
 
 	"github.com/gin-gonic/gin"
 )
