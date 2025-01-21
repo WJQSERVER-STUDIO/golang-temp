@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"log"
 
 	"go/api"
@@ -14,9 +15,13 @@ import (
 )
 
 var (
-	cfg        *config.Config
-	configfile = "/data/go/config/config.toml"
-	router     *gin.Engine
+	cfg     *config.Config
+	router  *gin.Engine
+	version string
+)
+
+var (
+	cfgfile string
 )
 
 // 日志模块
@@ -28,15 +33,15 @@ var (
 )
 
 func ReadFlag() {
-	cfgfile := flag.String("cfg", configfile, "config file path")
+	cfgfilePtr := flag.String("cfg", "./config/config.toml", "config file path")
 	flag.Parse()
-	configfile = *cfgfile
+	cfgfile = *cfgfilePtr
 }
 
 func loadConfig() {
 	var err error
 	// 初始化配置
-	cfg, err = config.LoadConfig(configfile)
+	cfg, err = config.LoadConfig(cfgfile)
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
@@ -54,19 +59,23 @@ func setupLogger() {
 	logw("Init Completed")
 }
 
-func setupApi(cfg *config.Config, router *gin.Engine) {
-	api.InitHandleRouter(cfg, router)
+func setupApi(cfg *config.Config, router *gin.Engine, version string) {
+	api.InitHandleRouter(cfg, router, version)
 }
 
 func init() {
 	ReadFlag()
+	flag.Parse()
 	loadConfig()
 	setupLogger()
 
-	gin.SetMode(gin.ReleaseMode)
-	router = gin.Default()
+	//gin.SetMode(gin.ReleaseMode)
+
+	gin.LoggerWithWriter(io.Discard)
+	router = gin.New()
+	router.Use(gin.Recovery())
 	router.UseH2C = false
-	setupApi(cfg, router)
+	setupApi(cfg, router, version)
 }
 
 func main() {
@@ -75,4 +84,5 @@ func main() {
 		logError("Failed to start server: %v\n", err)
 	}
 	defer logger.Close() // 确保在退出时关闭日志文件
+	fmt.Println("Program Exit")
 }
