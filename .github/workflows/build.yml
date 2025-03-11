@@ -9,8 +9,37 @@ on:
       - 'VERSION'
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: 加载版本号
+        run: |
+          if [ -f DEV-VERSION ]; then
+            echo "VERSION=$(cat DEV-VERSION)" >> $GITHUB_ENV
+          else
+            echo "DEV-VERSION file not found!" && exit 1
+          fi
+      - name: 输出版本号
+        run: | 
+          echo "Version: ${{ env.VERSION }}"
+      - name: 预先创建Pre-release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ env.VERSION }}
+          artifacts: ./DEV-VERSION
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.VERSION }}
+          allowUpdates: true
+          prerelease: true
+          body: ${{ env.VERSION }}
+        env:
+          export PATH: $PATH:/usr/local/go/bin
+
   build:
     runs-on: ubuntu-latest
+    needs: prepare
     strategy:
       matrix:
         goos: [linux]
@@ -40,7 +69,13 @@ jobs:
           CGO_ENABLED=0 go build -o  ${{ env.OUTPUT_BINARY }}-${{matrix.goos}}-${{matrix.goarch}} ./main.go
       - name: Package
         run: |
-          tar -czvf ${{ env.OUTPUT_BINARY }}-${{matrix.goos}}-${{matrix.goarch}}.tar.gz ./${{ env.OUTPUT_BINARY }}-${{matrix.goos}}-${{matrix.goarch}}
+          mkdir ${{ env.OUTPUT_BINARY }}d
+          cp ${{ env.OUTPUT_BINARY }}-${{matrix.goos}}-${{matrix.goarch}} ./${{ env.OUTPUT_BINARY }}d/
+          mv ./${{ env.OUTPUT_BINARY }}d/${{ env.OUTPUT_BINARY }}-${{matrix.goos}}-${{matrix.goarch}} ./${{ env.OUTPUT_BINARY }}d/${{ env.OUTPUT_BINARY }}
+          cp LICENSE ./${{ env.OUTPUT_BINARY }}/
+          tar -czf ${{ env.OUTPUT_BINARY }}-${{matrix.goos}}-${{matrix.goarch}}.tar.gz -C ${{ env.OUTPUT_BINARY }}d .
+          ls
+
       - name: 上传Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -52,10 +87,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           name: ${{ env.VERSION }}
-          artifacts: ./${{ env.OUTPUT_BINARY }}*
+          artifacts: ./${{ env.OUTPUT_BINARY }}-${{matrix.goos}}-${{matrix.goarch}}.tar.gz
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ env.VERSION }}
           allowUpdates: true
+          body: ${{ env.VERSION }}
         env:
           export PATH: $PATH:/usr/local/go/bin     
   docker:

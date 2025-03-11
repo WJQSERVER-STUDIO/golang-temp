@@ -1,7 +1,7 @@
 package api
 
 import (
-	"go/config"
+	"golang-temp/config"
 
 	"github.com/gin-gonic/gin"
 )

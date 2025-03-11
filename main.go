@@ -3,11 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"golang-temp/api"
+	"golang-temp/config"
+	"golang-temp/middleware/loggin"
+	"golang-temp/middleware/timing"
 	"io"
 	"log"
-
-	"go/api"
-	"go/config"
 
 	"github.com/WJQSERVER-STUDIO/go-utils/logger"
 
@@ -27,7 +28,7 @@ var (
 // 日志模块
 var (
 	logw       = logger.Logw
-	LogDump    = logger.LogDump
+	logDump    = logger.LogDump
 	logDebug   = logger.LogDebug
 	logInfo    = logger.LogInfo
 	logWarning = logger.LogWarning
@@ -76,6 +77,8 @@ func init() {
 	gin.LoggerWithWriter(io.Discard)
 	router = gin.New()
 	router.Use(gin.Recovery())
+	router.Use(loggin.Middleware())
+	router.Use(timing.Middleware())
 	router.UseH2C = false
 	setupApi(cfg, router, version)
 }
