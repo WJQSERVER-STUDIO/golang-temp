@@ -1,5 +1,5 @@
-github.com/BurntSushi/toml v1.4.0 h1:kuoIxZQy2WRRk1pttg9asf+WVv6tWQuBNVmK8+nqPr0=
-github.com/BurntSushi/toml v1.4.0/go.mod h1:ukJfTF/6rtPPRCnwkur4qwRxa8vTRFBF0uk2lLoLwho=
+github.com/BurntSushi/toml v1.5.0 h1:W5quZX/G/csjUnuI8SUYlsHs9M38FC7znL0lIO+DvMg=
+github.com/BurntSushi/toml v1.5.0/go.mod h1:ukJfTF/6rtPPRCnwkur4qwRxa8vTRFBF0uk2lLoLwho=
 github.com/WJQSERVER-STUDIO/go-utils/log v0.0.1 h1:gJEQspQPB527Vp2FPcdOrynQEj3YYtrg1ixVSB/JvZM=
 github.com/WJQSERVER-STUDIO/go-utils/log v0.0.1/go.mod h1:j9Q+xnwpOfve7/uJnZ2izRQw6NNoXjvJHz7vUQAaLZE=
 github.com/WJQSERVER-STUDIO/go-utils/logger v1.5.0 h1:Uk4N7Sh4OPth3am3xVv17JlAm7tsna97ZLQRpQj7r5c=
